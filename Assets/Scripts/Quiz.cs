@@ -18,7 +18,8 @@ public class Quiz : MonoBehaviour
 
     void Start()
     {
-        DisplayQuestion();
+        //DisplayQuestion();
+        GetNextQuestion();
     }
 
     // control when a button is selected
@@ -33,6 +34,7 @@ public class Quiz : MonoBehaviour
         {
             WrongAnswer(index);
         }
+        SetButtonsState(false);
     }
 
     private void CorrectAnswer(int index)
@@ -61,6 +63,31 @@ public class Quiz : MonoBehaviour
             TextMeshProUGUI buttonText = answerButtons[i].GetComponentInChildren<TextMeshProUGUI>();
             // get the answer at the array position
             buttonText.text = question.GetAnswer(i);
+        }
+    }
+
+    private void SetButtonsState(bool state)
+    {
+        for (int i = 0; i < answerButtons.Length; i++)
+        {
+            Button button = answerButtons[i].GetComponent<Button>();
+            button.interactable = state;
+        }
+    }
+
+    private void GetNextQuestion()
+    {
+        SetButtonsState(true);
+        SetDefaultButtonSprites();
+        DisplayQuestion();
+    }
+
+    private void SetDefaultButtonSprites()
+    {
+        for (int i = 0; i < answerButtons.Length; i++)
+        {
+            buttonImage = answerButtons[i].GetComponent<Image>();
+            buttonImage.sprite = defaultAnswerSprite;
         }
     }
 
