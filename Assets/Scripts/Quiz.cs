@@ -48,9 +48,14 @@ public class Quiz : MonoBehaviour
         correctAnswerIndex = question.GetCorrectAnswerIndex();
         string correctAnswer = question.GetAnswer(correctAnswerIndex);
         questionText.text = "Wrong answer! The correct one is:\n " + correctAnswer;
+
         buttonImage = answerButtons[index].GetComponent<Image>();
         buttonImage.sprite = wrongAnswerSprite;
+
+        buttonImage = answerButtons[correctAnswerIndex].GetComponent<Image>();
+        buttonImage.sprite = correctAnswerSprite;
     }
+
 
     private void DisplayQuestion()
     {
