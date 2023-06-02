@@ -6,26 +6,56 @@ using UnityEngine.UI;
 
 public class Quiz : MonoBehaviour
 {
+    [Header("Questions")]
     [SerializeField] TextMeshProUGUI questionText;
-    [SerializeField] QuestionSO question;
+    [SerializeField] List<QuestionSO> questions = new List<QuestionSO>();
+    QuestionSO currentQuestion;
+
+    [Header("Answers")]
     // array to store all answers buttons gameObjects 
     [SerializeField] GameObject[] answerButtons;
     int correctAnswerIndex;
+    bool hasAnsweredEarly;
+
+    [Header("Button Colors")]
     [SerializeField] Sprite defaultAnswerSprite;
     [SerializeField] Sprite correctAnswerSprite;
     [SerializeField] Sprite wrongAnswerSprite;
     Image buttonImage;
 
+    [Header("Timer")]
+    [SerializeField] Image timerImage;
+    // call the Timer.cs script 
+    Timer timer;
+    private int index;
+
     void Start()
     {
-        //DisplayQuestion();
-        GetNextQuestion();
+        timer = FindObjectOfType<Timer>();
+    }
+
+    void Update()
+    {
+        timerImage.fillAmount = timer.fillFraction;
+        if (timer.loadNextQuestion)
+        {
+            hasAnsweredEarly = false;
+            GetNextQuestion();
+            // to prevent from getting a new question every frame
+            timer.loadNextQuestion = false;
+        }
+        // when times reachs 0
+        else if (!hasAnsweredEarly && !timer.isAnsweringQuestion)
+        {
+            CorrectAnswer(index);
+            SetButtonsState(false);
+        }
     }
 
     // control when a button is selected
     public void OnAnswerSelected(int index)
     {
-        if (index == question.GetCorrectAnswerIndex())
+        if (index == currentQuestion.GetCorrectAnswerIndex())
         {
             questionText.text = "Correct!";
             CorrectAnswer(index);
@@ -34,7 +64,10 @@ public class Quiz : MonoBehaviour
         {
             WrongAnswer(index);
         }
+
+        hasAnsweredEarly = true;
         SetButtonsState(false);
+        timer.CancelTimer();
     }
 
     private void CorrectAnswer(int index)
@@ -45,8 +78,8 @@ public class Quiz : MonoBehaviour
 
     private void WrongAnswer(int index)
     {
-        correctAnswerIndex = question.GetCorrectAnswerIndex();
-        string correctAnswer = question.GetAnswer(correctAnswerIndex);
+        correctAnswerIndex = currentQuestion.GetCorrectAnswerIndex();
+        string correctAnswer = currentQuestion.GetAnswer(correctAnswerIndex);
         questionText.text = "Wrong answer! The correct one is:\n " + correctAnswer;
 
         buttonImage = answerButtons[index].GetComponent<Image>();
@@ -59,7 +92,7 @@ public class Quiz : MonoBehaviour
 
     private void DisplayQuestion()
     {
-        questionText.text = question.GetQuestion();
+        questionText.text = currentQuestion.GetQuestion();
 
         // run the loop while i is less than the lenght of our answerButtons array
         for (int i = 0; i < answerButtons.Length; i++)
@@ -67,7 +100,7 @@ public class Quiz : MonoBehaviour
             // get the children component of answer button gameObject and find the first textMeshPro component 
             TextMeshProUGUI buttonText = answerButtons[i].GetComponentInChildren<TextMeshProUGUI>();
             // get the answer at the array position
-            buttonText.text = question.GetAnswer(i);
+            buttonText.text = currentQuestion.GetAnswer(i);
         }
     }
 
@@ -82,9 +115,25 @@ public class Quiz : MonoBehaviour
 
     private void GetNextQuestion()
     {
-        SetButtonsState(true);
-        SetDefaultButtonSprites();
-        DisplayQuestion();
+        if (questions.Count > 0)
+        {
+            SetButtonsState(true);
+            SetDefaultButtonSprites();
+            GetRandomQuestion();
+            DisplayQuestion();
+        }
+    }
+
+    private void GetRandomQuestion()
+    {
+        int index = Random.Range(0, questions.Count);
+        currentQuestion = questions[index];
+
+        if (questions.Contains(currentQuestion))
+        {
+            questions.Remove(currentQuestion);
+        }
+        questions.Remove(currentQuestion);
     }
 
     private void SetDefaultButtonSprites()
