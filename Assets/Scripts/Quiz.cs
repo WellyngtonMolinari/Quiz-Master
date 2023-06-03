@@ -41,7 +41,8 @@ public class Quiz : MonoBehaviour
     {
         timer = FindObjectOfType<Timer>();
         scoreKeeper = FindAnyObjectByType<ScoreKeeper>();
-        progressBar.maxValue = questions.Count;
+        progressBar.maxValue = questions.Count-1;
+        progressBar.minValue = 0; // Add this line to slider start at position 0
         progressBar.value = 0;
     }
 
@@ -88,8 +89,8 @@ public class Quiz : MonoBehaviour
             if (index >= 0 && index < answerButtons.Length)
             {
                 buttonImage = answerButtons[index].GetComponent<Image>();
+                buttonImage.sprite = correctAnswerSprite;
             }
-            buttonImage.sprite = correctAnswerSprite;
             scoreKeeper.IncrementCorrectAnswers();
         }
         else
@@ -98,14 +99,17 @@ public class Quiz : MonoBehaviour
             string correctAnswer = currentQuestion.GetAnswer(correctAnswerIndex);
             questionText.text = "Wrong answer! The correct one is:\n " + correctAnswer;
 
-            buttonImage = answerButtons[index].GetComponent<Image>();
-            buttonImage.sprite = wrongAnswerSprite;
+            if (index >= 0 && index < answerButtons.Length)
+            {
+                buttonImage = answerButtons[index].GetComponent<Image>();
+                buttonImage.sprite = wrongAnswerSprite;
+            }
 
             buttonImage = answerButtons[correctAnswerIndex].GetComponent<Image>();
             buttonImage.sprite = correctAnswerSprite;
         }
-
     }
+
 
     private void DisplayQuestion()
     {
@@ -138,8 +142,16 @@ public class Quiz : MonoBehaviour
             SetDefaultButtonSprites();
             GetRandomQuestion();
             DisplayQuestion();
-            progressBar.value++;
+            ProgressBarFill();
             scoreKeeper.IncrementQuestionsSeen();
+        }
+    }
+
+    private void ProgressBarFill()
+    {
+        if (scoreKeeper.GetQuestionsSeen() >= 1)
+        {
+            progressBar.value++;
         }
     }
 

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dafdf6e3a5fe37b4cb89b71d189bcb74, type: 3}
   m_Name: Question 3
   m_EditorClassIdentifier: 
-  question: Enter new question text here2
+  question: What is the correct syntax for declaring a variable in C#?
   answers:
-  - 
-  - 
-  - 
-  - 
-  correctAnswerIndex: 0
+  - a) var myVariable = 10;
+  - b) int myVariable = 10;
+  - c) float myVariable = 10.0;
+  - d) string myVariable = "Hello";
+  correctAnswerIndex: 1

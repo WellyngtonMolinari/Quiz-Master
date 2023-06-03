@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 58908390}
   - component: {fileID: 58908389}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Title Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1622,7 +1622,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 154185719}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 5
+  m_MaxValue: 3
   m_WholeNumbers: 1
   m_Value: 0
   m_OnValueChanged:
@@ -2016,8 +2016,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66a9acc0b616e614ca903a091057d060, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToCompleteQuestion: 10
-  timeToShowCorrectAnswer: 5
+  timeToCompleteQuestion: 5
+  timeToShowCorrectAnswer: 2
   loadNextQuestion: 0
   isAnsweringQuestion: 0
   fillFraction: 0
@@ -2592,6 +2592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d893413c4de1c7546863589b490885c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  questionsSeen: 0
 --- !u!4 &2061611440
 Transform:
   m_ObjectHideFlags: 0

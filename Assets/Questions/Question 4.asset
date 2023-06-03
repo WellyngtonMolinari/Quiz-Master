@@ -12,10 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dafdf6e3a5fe37b4cb89b71d189bcb74, type: 3}
   m_Name: Question 4
   m_EditorClassIdentifier: 
-  question: Enter new question text here3
+  question: 'int x = 5;
+
+    int y = 3;
+
+    int result = x + y;
+
+    Console.WriteLine(result);'
   answers:
-  - 
-  - 
-  - 
-  - 
-  correctAnswerIndex: 0
+  - 5
+  - 6
+  - 8
+  - None
+  correctAnswerIndex: 2
